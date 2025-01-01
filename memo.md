@@ -19,7 +19,7 @@ go mod init
 type UserResponse struct {
 	ID    uint   `json:"id" gorm:"primaryKey"`
 	Email string `json: "email" gorm:"unique"`
-                     // 文字列がズレる。インデントチェックした方が良いかも
+	// 文字列がズレる。インデントチェックした方が良いかも
 }
 ```
 
