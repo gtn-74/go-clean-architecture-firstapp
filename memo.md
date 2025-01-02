@@ -1,10 +1,50 @@
 # クリーンアーキテクチャで REST API
 
-## go mod init
+## クリーンアーキテクチャ(OOP:Object-Oriented Programming)
+
+オブジェクト指向の概念は取り入れているものの、オブジェクト指向に限定されるアーキテクチャではない。
+
+システムを以下のような層に分けて、依存関係を明確にし、変更に強いシステムを設計する方法
+
+- 中心（エンティティ層）
+  ビジネスルールを明確にし、アプリケーションに依存しない
+
+- ユースケース層
+  アプリケーション固有のビジネスロジックを定義
+
+- インターフェースアダプタ層
+  外部システム（データベース、API）ブリッジ
+
+- フレームワーク層
+  フレームワーク、外部ライブラリを使った具体的な実装
+
+### クリーンアーキテクチャの基本原則
+
+依存逆転の原則（DIP:Dependency Inversion Principle）を実現することが目的
+
+#### オブジェクト指向の特徴
+
+- カプセル化
+- 継承
+- ポリモーフィズム：同じインターフェースを持つ異なる実装を切り替える仕組み
+
+## go のエトセトラ
+
+go mod = Go Modules の省略であり、依存関係管理システムのこと
 
 ```go
 go mod init
 ```
+
+### go.mod の内容
+
+- モジュール名
+- Golang のバージョン
+- 依存関係
+
+### 依存関係の整理
+
+`go mod tidy`
 
 ## docker command
 
@@ -25,7 +65,6 @@ type UserResponse struct {
 
 ![スクリーンショット 2025-01-01 11 20 58](https://gist.github.com/user-attachments/assets/b5875fbc-8e1b-4208-908b-e72c2d4f3b05)
 
-
 `GO_ENV`の値が`dev`だったら load 関数が走り、ローカルで持ってる`.env`を見に行ってる。
 
 ```go
@@ -42,10 +81,11 @@ func NewDB() *gorm.DB {
 ```
 
 ### 注意
+
 docker も立ち上げてないと動かないからね。
 
 `go run migrate/migrate.go`したら、
 
-pgAdminで生成したテーブルを確認できる。
+pgAdmin で生成したテーブルを確認できる。
 
 ![スクリーンショット 2025-01-01 11 20 58](https://gist.github.com/user-attachments/assets/1fa320ab-d526-49be-9c32-1952fd68e648)
