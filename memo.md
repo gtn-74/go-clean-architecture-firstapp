@@ -89,3 +89,28 @@ docker も立ち上げてないと動かないからね。
 pgAdmin で生成したテーブルを確認できる。
 
 ![スクリーンショット 2025-01-01 11 20 58](https://gist.github.com/user-attachments/assets/1fa320ab-d526-49be-9c32-1952fd68e648)
+
+## golang の独特記法
+
+### 短縮変数宣言
+
+下の`:=`と`var`の変数宣言はイコール
+
+```go
+:= === var hoge string = fuga
+```
+
+### method receiver
+
+```go
+func (レシーバー名 レシーバー型) メソッド名(引数) 戻り値型 {
+    // メソッドの処理
+}
+
+func (uu *userUsecase)
+```
+## あとで調べよう
+
+### ポインタ
+### レシーバー
+

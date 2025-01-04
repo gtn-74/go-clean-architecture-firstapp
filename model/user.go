@@ -8,6 +8,7 @@ import "time"
 *  `json:"id" gorm:"primaryKey"`
  */
 
+// エンティティ
 type User struct {
 	ID       uint      `json:"id" gorm:"primaryKey"`
 	Email    string    `json:"email" gome:"unique"`
