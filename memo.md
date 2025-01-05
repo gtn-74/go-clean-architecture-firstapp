@@ -109,8 +109,15 @@ func (レシーバー名 レシーバー型) メソッド名(引数) 戻り値�
 
 func (uu *userUsecase)
 ```
+
+### CRUD チェック
+
+- docker-compose 立ち上げ
+- go run migrate 'GO_ENV=dev go run migrate/migrate.go'
+- echo run 'GO_ENV=dev go run main.go'
+
 ## あとで調べよう
 
 ### ポインタ
-### レシーバー
 
+### レシーバー
