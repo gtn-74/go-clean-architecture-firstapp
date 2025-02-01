@@ -113,8 +113,13 @@ func (uu *userUsecase)
 ### CRUD チェック
 
 - docker-compose 立ち上げ
-- go run migrate 'GO_ENV=dev go run migrate/migrate.go'
+<!-- 既存のマイグレーションファイルを立ち上げるコマンド -->
+- go run migrate: 'GO_ENV=dev go run migrate/migrate.go'
 - echo run 'GO_ENV=dev go run main.go'
+
+### ログチェック
+
+`println()`がログ出力
 
 ## あとで調べよう
 
