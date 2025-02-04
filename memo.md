@@ -137,3 +137,14 @@ chat gpt なかったら絶対わかんなかった。と思う
 
 
 # deleteだけできない。。。
+
+```go
+func (tr *taskRepository) DeleteTask(userId uint, taskId uint) error {
+	//! この書き方は、決まってる Delete(&構造体名{}) Delete(&model.Task{})
+	result := tr.db.Where("id=? AND user_id=?", taskId, userId {/* ← ormのtaskIdとuserIdの順番間違えてた。入れ替えたら治った*/}).Delete(&model.Task{})
+	if result.RowsAffected < 1 {
+		return fmt.Errorf("object does not exist")
+	}
+	return nil
+}
+```
