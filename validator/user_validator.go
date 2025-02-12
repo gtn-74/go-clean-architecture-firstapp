@@ -17,8 +17,11 @@ func NewUserValidator() IUserValidator {
 	return &userValidator{}
 }
 
+
+//TODO: バリデーションストラクトの第一引数、fieldの第一引数にはポインタが必要らしい
+//! めんどくさくて調べてないけど、後々調べる
 func (uv *userValidator) UserValidate(user model.User) error {
-	return validation.ValidateStruct(
+	return validation.ValidateStruct(&user,
 		validation.Field(
 			&user.Email,
 			validation.Required.Error("email is required"),

@@ -3,6 +3,7 @@ package usecase
 import (
 	"go-clean-architecture-firstapp/model"
 	"go-clean-architecture-firstapp/repository"
+	"go-clean-architecture-firstapp/validator"
 )
 
 type ITaskUsecase interface {
@@ -17,10 +18,11 @@ type ITaskUsecase interface {
 
 type taskUsecase struct {
 	tr repository.ITaskRepository
+	tv validator.ITaskValidator // !validationを紐付け
 }
 
-func NewTaskUsecase(tr repository.ITaskRepository) ITaskUsecase /* modelのtask.goで定義してる型 */ {
-	return &taskUsecase{tr}
+func NewTaskUsecase(tr repository.ITaskRepository, tv validator.ITaskValidator) ITaskUsecase /* modelのtask.goで定義してる型 */ {
+	return &taskUsecase{tr, tv} // taskUsecaseをインスタンス化する際にまとめる
 }
 
 func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
@@ -57,7 +59,16 @@ func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse
 	return resTask, nil
 }
 
+// !validation付与
 func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
+	// !taskRepositoryのcreateTaskを呼び出す前にバリデーションをかける
+
+	// !バリデーション
+	if err := tu.tv.TaskValidate(task); err != nil {
+		return model.TaskResponse{}, err
+	}
+
+	// !登録
 	if err := tu.tr.CreateTask(&task); err != nil {
 		return model.TaskResponse{}, err
 	}
@@ -71,6 +82,13 @@ func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
 }
 
 func (tu *taskUsecase) UpdateTask(task model.Task, userId uint, taskId uint) (model.TaskResponse, error) {
+
+	// !バリデーション
+	if err := tu.tv.TaskValidate(task); err != nil {
+		return model.TaskResponse{}, err
+	}
+
+	// !登録
 	if err := tu.tr.UpdateTask(&task, userId, taskId); err != nil {
 		return model.TaskResponse{}, err
 	}

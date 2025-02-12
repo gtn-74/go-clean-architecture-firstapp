@@ -3,6 +3,7 @@ package usecase
 import (
 	"go-clean-architecture-firstapp/model"
 	"go-clean-architecture-firstapp/repository"
+	"go-clean-architecture-firstapp/validator"
 	"os"
 	"time"
 
@@ -21,14 +22,22 @@ type IUserUsecase interface {
 type userUsecase struct {
 	// urは、フィールド
 	ur repository.IUserRepository
+	uv validator.IUserValidator
 }
 
-func NewUserUsecase(ur repository.IUserRepository) IUserUsecase {
-	return &userUsecase{ur}
+func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator) IUserUsecase {
+	return &userUsecase{ur, uv}
 }
 
 // signUPメソッド
 func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
+
+	// !バリデーション
+	if err := uu.uv.UserValidate(user); err != nil {
+		return model.UserResponse{}, err
+	}
+
+	// !登録実装
 	// signupの引数であるuserには、クライアントがわから渡ってきた入力データが入る
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	// byte(user.Password)をハッシュ化
@@ -54,6 +63,13 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 }
 
 func (uu *userUsecase) Login(user model.User) (string, error) {
+
+	// !バリデーション
+	if err := uu.uv.UserValidate(user); err != nil {
+		return "", err
+	}
+
+	// !登録
 	storedUser := model.User{}
 	// db側で持ってる情報と入力された情報の照らし合わせ
 	if err := uu.ur.GetUserByEmail(&storedUser, user.Email); err != nil {
